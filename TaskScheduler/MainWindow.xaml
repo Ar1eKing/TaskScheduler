@@ -34,7 +34,7 @@
             </MenuItem>
         </Menu>
 
-        <TextBox Grid.Row="1" Grid.Column="2" />
+        <DataGrid Grid.Row="1" Grid.Column="0" />
 
         <GridSplitter
             Grid.Row="1"
@@ -44,6 +44,47 @@
             VerticalAlignment="Stretch"
             ShowsPreview="False" />
 
-        <TextBox Grid.Row="1" Grid.Column="0" />
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+
+            <DockPanel Grid.Row="0">
+                <TextBlock Text="Name : " />
+                <TextBox Text="Test" />
+            </DockPanel>
+
+            <DockPanel Grid.Row="1" Margin="0,5,0,5">
+                <TextBlock Text="Status : " />
+                <TextBox Text="Test" />
+            </DockPanel>
+
+            <DockPanel Grid.Row="2">
+                <TextBlock Text="Trigger Time : " />
+                <TextBox Text="Test" />
+            </DockPanel>
+
+            <DockPanel Grid.Row="3" Margin="0,5,0,5">
+                <TextBlock Text="Executable Path : " />
+                <TextBox Text="Test" />
+            </DockPanel>
+
+            <DockPanel Grid.Row="4">
+                <TextBlock Text="Description : " />
+                <TextBox Text="Test" />
+            </DockPanel>
+
+            <DockPanel
+                Grid.Row="5"
+                Margin="0,5,0,5"
+                HorizontalAlignment="Right">
+                <Button Padding="7,0,7,0" Content="Save Changes" />
+            </DockPanel>
+        </Grid>
     </Grid>
 </Window>
