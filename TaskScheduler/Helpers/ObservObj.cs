@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace TaskScheduler
 {
-    class ObservObj : INotifyPropertyChanged
+    public class ObservObj : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ignore="http://www.galasoft.ch/ignore"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="http://www.galasoft.ch/mvvmlight"
     Title="MVVM Light Application"
     Width="700"
     Height="400"
@@ -26,7 +28,8 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="3"
-            Height="24">
+            Height="24"
+            Background="White">
             <MenuItem Height="24" Header="File">
                 <MenuItem Header="New" />
                 <Separator />
@@ -34,53 +37,114 @@
             </MenuItem>
         </Menu>
 
-        <DataGrid Grid.Row="1" Grid.Column="0" />
+        <DataGrid
+            x:Name="dgTasks"
+            Grid.Row="1"
+            Grid.Column="0"
+            AutoGenerateColumns="False"
+            Background="Honeydew"
+            ItemsSource="{Binding Tasks}"
+            SelectedIndex="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="auto"
+                    MaxWidth="200"
+                    Binding="{Binding TaskName}"
+                    Header="Name" />
+
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding Status}"
+                    Header="Status" />
+
+                <DataGridTextColumn
+                    Width="auto"
+                    Binding="{Binding Trigger}"
+                    Header="Trigger Time" />
+
+                <DataGridTextColumn
+                    Width="200"
+                    Binding="{Binding ExecutablePath}"
+                    Header="Executable Path" />
+
+                <DataGridTextColumn
+                    Width="200"
+                    Binding="{Binding Description}"
+                    Header="Description" />
+            </DataGrid.Columns>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <mvvm:EventToCommand Command="{Binding SelectionChangedCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=dgTasks, Path=SelectedItem}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </DataGrid>
 
         <GridSplitter
             Grid.Row="1"
             Grid.Column="1"
-            Width="3"
+            Width="4"
             HorizontalAlignment="Center"
             VerticalAlignment="Stretch"
+            Background="White"
             ShowsPreview="False" />
 
-        <Grid Grid.Row="1" Grid.Column="2">
+        <Grid
+            Grid.Row="1"
+            Grid.Column="2"
+            Margin="0,0,5,0"
+            Background="Honeydew"
+            DataContext="{Binding BuffTask}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
-                <RowDefinition Height="30" />
-                <RowDefinition Height="20" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <DockPanel Grid.Row="0">
                 <TextBlock Text="Name : " />
-                <TextBox Text="Test" />
+                <TextBox Text="{Binding TaskName}" TextWrapping="Wrap" />
             </DockPanel>
 
             <DockPanel Grid.Row="1" Margin="0,5,0,5">
                 <TextBlock Text="Status : " />
-                <TextBox Text="Test" />
+                <TextBox Text="{Binding Status}" TextWrapping="Wrap" />
             </DockPanel>
 
             <DockPanel Grid.Row="2">
                 <TextBlock Text="Trigger Time : " />
-                <TextBox Text="Test" />
+                <TextBox Text="{Binding Trigger}" TextWrapping="Wrap" />
             </DockPanel>
 
-            <DockPanel Grid.Row="3" Margin="0,5,0,5">
+            <DockPanel Grid.Row="3" Margin="0,5,0,0">
                 <TextBlock Text="Executable Path : " />
-                <TextBox Text="Test" />
+                <TextBox Text="{Binding ExecutablePath}" TextWrapping="Wrap" />
             </DockPanel>
 
-            <DockPanel Grid.Row="4">
+            <DockPanel Grid.Row="4" HorizontalAlignment="Right">
+                <Button Padding="0,-5,0,0" Content=" . . . " />
+            </DockPanel>
+
+            <DockPanel Grid.Row="5">
                 <TextBlock Text="Description : " />
-                <TextBox Text="Test" />
+            </DockPanel>
+
+            <DockPanel Grid.Row="6">
+                <TextBox
+                    AcceptsReturn="True"
+                    AcceptsTab="True"
+                    Text="{Binding Description}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Visible" />
             </DockPanel>
 
             <DockPanel
-                Grid.Row="5"
+                Grid.Row="7"
                 Margin="0,5,0,5"
                 HorizontalAlignment="Right">
                 <Button Padding="7,0,7,0" Content="Save Changes" />

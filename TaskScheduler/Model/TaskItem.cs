@@ -2,7 +2,7 @@
 
 namespace TaskScheduler.Model
 {
-    class TaskItem : ObservObj
+    public class TaskItem : ObservObj
     {
         private int _id;
         public int ID
@@ -45,9 +45,29 @@ namespace TaskScheduler.Model
             get { return _description; }
             set { Set(ref _description, value); }
         }
+
+        public TaskItem(int id, string taskName, status status, DateTime trigger, string executablePath, string description)
+        {
+            ID = id;
+            TaskName = taskName;
+            Status = status;
+            Trigger = trigger;
+            ExecutablePath = executablePath;
+            Description = description;
+        }
+
+        public TaskItem(TaskItem another)
+        {
+            ID = another.ID;
+            TaskName = another.TaskName;
+            Status = another.Status;
+            Trigger = another.Trigger;
+            ExecutablePath = another.ExecutablePath;
+            Description = another.Description;
+        }
     }
 
-    enum status
+    public enum status
     {
         WaitForTrigger,
         Completed,
