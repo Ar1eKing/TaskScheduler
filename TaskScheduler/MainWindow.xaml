@@ -5,13 +5,25 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ignore="http://www.galasoft.ch/ignore"
+    xmlns:local="clr-namespace:TaskScheduler"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mvvm="http://www.galasoft.ch/mvvmlight"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Title="MVVM Light Application"
     Width="700"
     Height="400"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
     mc:Ignorable="d ignore">
+    <Window.Resources>
+        <ObjectDataProvider
+            x:Key="dataFromEnum"
+            MethodName="GetValues"
+            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:status" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -31,9 +43,9 @@
             Height="24"
             Background="White">
             <MenuItem Height="24" Header="File">
-                <MenuItem Header="New" />
+                <MenuItem Header="New Task" />
                 <Separator />
-                <MenuItem Header="Exit" />
+                <MenuItem Command="{Binding CloseCommand}" Header="Exit" />
             </MenuItem>
         </Menu>
 
@@ -113,12 +125,12 @@
 
             <DockPanel Grid.Row="1" Margin="0,5,0,5">
                 <TextBlock Text="Status : " />
-                <TextBox Text="{Binding Status}" TextWrapping="Wrap" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding Status}" />
             </DockPanel>
 
             <DockPanel Grid.Row="2">
                 <TextBlock Text="Trigger Time : " />
-                <TextBox Text="{Binding Trigger}" TextWrapping="Wrap" />
+                <DatePickerTextBox Text="{Binding Trigger}" TextWrapping="Wrap" />
             </DockPanel>
 
             <DockPanel Grid.Row="3" Margin="0,5,0,0">
@@ -126,8 +138,14 @@
                 <TextBox Text="{Binding ExecutablePath}" TextWrapping="Wrap" />
             </DockPanel>
 
-            <DockPanel Grid.Row="4" HorizontalAlignment="Right">
-                <Button Padding="0,-5,0,0" Content=" . . . " />
+            <DockPanel
+                Grid.Row="4"
+                HorizontalAlignment="Right"
+                DataContext="{Binding Main, Source={StaticResource Locator}}">
+                <Button
+                    Padding="0,-5,0,0"
+                    Command="{Binding OpenPathDialogCommand}"
+                    Content=" . . . " />
             </DockPanel>
 
             <DockPanel Grid.Row="5">
@@ -146,8 +164,12 @@
             <DockPanel
                 Grid.Row="7"
                 Margin="0,5,0,5"
-                HorizontalAlignment="Right">
-                <Button Padding="7,0,7,0" Content="Save Changes" />
+                HorizontalAlignment="Right"
+                DataContext="{Binding Main, Source={StaticResource Locator}}">
+                <Button
+                    Padding="7,0,7,0"
+                    Command="{Binding SaveChangesCommand}"
+                    Content="Save Changes" />
             </DockPanel>
         </Grid>
     </Grid>

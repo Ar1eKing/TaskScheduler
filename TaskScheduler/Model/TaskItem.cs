@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TaskScheduler.Model
 {
-    public class TaskItem : ObservObj
+    public class TaskItem : ObservObj, IEquatable<TaskItem>
     {
+        #region Parameters
         private int _id;
         public int ID
         {
@@ -45,7 +47,9 @@ namespace TaskScheduler.Model
             get { return _description; }
             set { Set(ref _description, value); }
         }
+        #endregion
 
+        #region Constructors
         public TaskItem(int id, string taskName, status status, DateTime trigger, string executablePath, string description)
         {
             ID = id;
@@ -58,6 +62,9 @@ namespace TaskScheduler.Model
 
         public TaskItem(TaskItem another)
         {
+            if (another == null)
+                return;
+
             ID = another.ID;
             TaskName = another.TaskName;
             Status = another.Status;
@@ -65,12 +72,24 @@ namespace TaskScheduler.Model
             ExecutablePath = another.ExecutablePath;
             Description = another.Description;
         }
+        #endregion
+
+        public bool Equals(TaskItem other)
+        {
+            if (other == null)
+                return false;
+
+            return (this.ID == other.ID && this.TaskName.Equals(other.TaskName) && this.Status == other.Status && this.Trigger == other.Trigger && this.ExecutablePath.Equals(other.ExecutablePath) && this.Description.Equals(other.Description));
+        }
     }
 
-    public enum status
+    public class TaskComparer : IEqualityComparer<TaskItem>
     {
-        WaitForTrigger,
-        Completed,
-        Paused
+        public bool Equals(TaskItem x, TaskItem y)
+        {
+            return (x.ID == y.ID && x.TaskName.Equals(y.TaskName) && x.Status == y.Status && x.Trigger == y.Trigger && x.ExecutablePath.Equals(y.ExecutablePath) && x.Description.Equals(y.Description));
+        }
+
+        public int GetHashCode(TaskItem obj) => obj.GetHashCode();
     }
 }
