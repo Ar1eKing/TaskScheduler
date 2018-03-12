@@ -168,6 +168,12 @@
                 HorizontalAlignment="Right"
                 DataContext="{Binding Main, Source={StaticResource Locator}}">
                 <Button
+                    Margin="0,0,7,0"
+                    Padding="7,0,7,0"
+                    Command="{Binding DeleteTaskCommand}"
+                    CommandParameter="{Binding ElementName=dgTasks, Path=SelectedItem}"
+                    Content="Delete Task" />
+                <Button
                     Padding="7,0,7,0"
                     Command="{Binding SaveChangesCommand}"
                     Content="Save Changes" />

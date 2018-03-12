@@ -34,6 +34,7 @@ namespace TaskScheduler.ViewModel
         public RelayCommand CloseCommand { get; set; }
         public RelayCommand OpenPathDialogCommand { get; set; }
         public RelayCommand SaveChangesCommand { get; set; }
+        public RelayCommand<TaskItem> DeleteTaskCommand { get; set; }
         #endregion
         #endregion
 
@@ -50,6 +51,7 @@ namespace TaskScheduler.ViewModel
             SelectionChangedCommand = new RelayCommand<TaskItem>(SelectionChanged);
             OpenPathDialogCommand = new RelayCommand(openPathDialog);
             SaveChangesCommand = new RelayCommand(saveChanges);
+            DeleteTaskCommand = new RelayCommand<TaskItem>(deleteTask);
             CloseCommand = new RelayCommand(close);
         }
 
@@ -75,10 +77,22 @@ namespace TaskScheduler.ViewModel
             if (selectedTask.Equals(BuffTask))
                 return;
 
+            XmlDataProvider.redactTaskInData(BuffTask);
             Tasks[Tasks.IndexOf(selectedTask)] = new TaskItem(BuffTask);
         }
 
-        private void close() => Environment.Exit(0);
+        private void deleteTask(TaskItem selected)
+        {
+            Tasks.Remove(selected);
+            XmlDataProvider.deleteTaskInData(selected.ID);
+            BuffTask = new TaskItem();
+        }
+
+        private void close()
+        {
+            XmlDataProvider.saveChanges();
+            Environment.Exit(0);
+        }
 
         public override void Cleanup()
         {

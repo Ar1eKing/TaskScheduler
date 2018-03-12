@@ -3,11 +3,13 @@ using System.IO;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using TaskScheduler.Model;
+using System.Linq;
 
 namespace TaskScheduler
 {
     static class XmlDataProvider
     {
+        #region XML Constants
         private const string DATA_FILE_PATH = @"Data.xml";
         private const string ROOT_ELEMENT = "Tasks";
         private const string XML_ELEMENT = "task";
@@ -17,6 +19,7 @@ namespace TaskScheduler
         private const string XML_ELEMENT_TRIGGER = "trigger";
         private const string XML_ELEMENT_EXECUTABLE_PATH = "executablePath";
         private const string XML_ELEMENT_DESCRIPTION = "description";
+        #endregion
 
         private static XDocument xmlDocument;
 
@@ -72,12 +75,20 @@ namespace TaskScheduler
 
         public static void redactTaskInData(TaskItem task)
         {
-            //redact item in xml
+            XElement el = xmlDocument.Root.Descendants(XML_ELEMENT).Where(t => (t.Attribute(XML_ATTRIBUTE_ID).Value == task.ID.ToString())).First();
+            el.SetElementValue(XML_ELEMENT_TASK_NAME, task.TaskName);
+            el.SetElementValue(XML_ELEMENT_STATUS, task.Status);
+            el.SetElementValue(XML_ELEMENT_TRIGGER, task.Trigger);
+            el.SetElementValue(XML_ELEMENT_EXECUTABLE_PATH, task.ExecutablePath);
+            el.SetElementValue(XML_ELEMENT_DESCRIPTION, task.Description);
         }
 
-        public static void deleteTaskInData(int id)
-        {
-            //delete element in xml
-        }
+        public static void deleteTaskInData(int id) =>
+            xmlDocument.Root.Descendants(XML_ELEMENT).
+            Where(t => (t.Attribute(XML_ATTRIBUTE_ID).Value == id.ToString())).
+            Remove();
+
+        public static void saveChanges() =>
+            xmlDocument.Save(DATA_FILE_PATH);
     }
 }
