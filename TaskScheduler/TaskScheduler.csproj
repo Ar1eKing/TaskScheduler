@@ -70,10 +70,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helpers\EnumBindingSourceExtension .cs" />
-    <Compile Include="Helpers\EnumDescriptionTypeConverter .cs" />
+    <Compile Include="Helpers\StatusComboBox\EnumBindingSourceExtension .cs" />
+    <Compile Include="Helpers\StatusComboBox\EnumDescriptionTypeConverter .cs" />
     <Compile Include="Helpers\ObservObj.cs" />
-    <Compile Include="Helpers\Status.cs" />
+    <Compile Include="Helpers\StatusComboBox\Status.cs" />
+    <Compile Include="Helpers\XmlDataProvider.cs" />
     <Compile Include="Model\TaskItem.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

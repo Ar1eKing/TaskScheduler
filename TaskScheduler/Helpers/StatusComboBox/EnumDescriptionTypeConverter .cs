@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace TaskScheduler.Helpers
+namespace TaskScheduler
 {
     public class EnumDescriptionTypeConverter : EnumConverter
     {

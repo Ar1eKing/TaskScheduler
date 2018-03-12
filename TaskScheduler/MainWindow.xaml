@@ -55,6 +55,7 @@
             Grid.Column="0"
             AutoGenerateColumns="False"
             Background="Honeydew"
+            CanUserAddRows="False"
             ItemsSource="{Binding Tasks}"
             SelectedIndex="0">
             <DataGrid.Columns>

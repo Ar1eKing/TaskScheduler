@@ -42,13 +42,7 @@ namespace TaskScheduler.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            Tasks = new ObservableCollection<TaskItem>();
-            //Tasks = getDataFromXml();
-            //tmp Data
-            Tasks.Add(new TaskItem(1, "Test", status.WaitForTrigger, System.DateTime.Now, @"notepad++.exe", "Some test description ..."));
-            Tasks.Add(new TaskItem(2, "Second Test", status.Paused, System.DateTime.Now, @"C:\Program Files\Notepad++\notepad++.exe", "Second some test description ..."));
-            Tasks.Add(new TaskItem(3, "Test #3", status.Completed, System.DateTime.Now, @"C:\Program Files\Notepad++\notepad++.exe", "Some test description for test #3 ..."));
-            //~tmp Data
+            Tasks = new ObservableCollection<TaskItem>(XmlDataProvider.getDataFromFile());
 
             if (Tasks.Count >= 1)
                 BuffTask = new TaskItem(Tasks[0]);

@@ -72,6 +72,16 @@ namespace TaskScheduler.Model
             ExecutablePath = another.ExecutablePath;
             Description = another.Description;
         }
+
+        public TaskItem()
+        {
+            ID = -1;
+            TaskName = "";
+            Status = status.Paused;
+            Trigger = DateTime.Now;
+            ExecutablePath = "";
+            Description = "";
+        }
         #endregion
 
         public bool Equals(TaskItem other)
