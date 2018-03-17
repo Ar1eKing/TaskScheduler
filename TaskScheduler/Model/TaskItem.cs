@@ -77,7 +77,7 @@ namespace TaskScheduler.Model
         {
             ID = -1;
             TaskName = "";
-            Status = status.Paused;
+            Status = status.WaitForTrigger;
             Trigger = DateTime.Now;
             ExecutablePath = "";
             Description = "";

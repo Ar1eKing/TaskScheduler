@@ -43,7 +43,10 @@
             Height="24"
             Background="White">
             <MenuItem Height="24" Header="File">
-                <MenuItem Header="New Task" />
+                <MenuItem
+                    Command="{Binding OpenAddDialogCommand}"
+                    DataContext="{Binding addTaskDialogViewModel}"
+                    Header="New Task" />
                 <Separator />
                 <MenuItem Command="{Binding CloseCommand}" Header="Exit" />
             </MenuItem>
@@ -180,4 +183,10 @@
             </DockPanel>
         </Grid>
     </Grid>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <mvvm:EventToCommand Command="{Binding CloseCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 </Window>

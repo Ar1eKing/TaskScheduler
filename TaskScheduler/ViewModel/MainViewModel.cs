@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.Win32;
+using System.Threading;
+using System.Diagnostics;
 using GalaSoft.MvvmLight;
 using TaskScheduler.Model;
 using GalaSoft.MvvmLight.Command;
@@ -29,6 +31,8 @@ namespace TaskScheduler.ViewModel
 
         private TaskItem selectedTask;
 
+        public AddTaskDialogViewModel addTaskDialogViewModel { get; set; }
+
         #region Commands
         public RelayCommand<TaskItem> SelectionChangedCommand { get; set; }
         public RelayCommand CloseCommand { get; set; }
@@ -48,11 +52,34 @@ namespace TaskScheduler.ViewModel
             if (Tasks.Count >= 1)
                 BuffTask = new TaskItem(Tasks[0]);
 
+            addTaskDialogViewModel = new AddTaskDialogViewModel(ref _tasks);
+
             SelectionChangedCommand = new RelayCommand<TaskItem>(SelectionChanged);
             OpenPathDialogCommand = new RelayCommand(openPathDialog);
             SaveChangesCommand = new RelayCommand(saveChanges);
             DeleteTaskCommand = new RelayCommand<TaskItem>(deleteTask);
             CloseCommand = new RelayCommand(close);
+
+            Thread wacher = new Thread(TaskWacher);
+            wacher.Start();
+        }
+
+        private void TaskWacher()
+        {
+            while (true)
+            {
+                foreach(var tsk in Tasks)
+                {
+                    if (tsk.Trigger < DateTime.Now && tsk.Status == status.WaitForTrigger)
+                    {
+                        Process.Start(tsk.ExecutablePath);
+                        tsk.Status = status.Completed;
+                    }                        
+                }
+
+                Thread.Sleep(1000);
+                Console.WriteLine("working ...");
+            }
         }
 
         private void SelectionChanged(TaskItem selected)
