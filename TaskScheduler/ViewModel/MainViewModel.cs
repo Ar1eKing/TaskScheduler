@@ -78,7 +78,6 @@ namespace TaskScheduler.ViewModel
                 }
 
                 Thread.Sleep(1000);
-                Console.WriteLine("working ...");
             }
         }
 
